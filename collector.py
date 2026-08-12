@@ -49,7 +49,7 @@ def get_data(symbol, interval):
         params={
             "symbol": symbol,
             "interval": interval,
-            "limit": 100
+            "limit": 200
         }
     )
 
@@ -84,7 +84,7 @@ for symbol in SYMBOLS:
             market_features = calculate_market_structure(
             df=df,
             rsi=rsi,
-            lookback=30
+            lookback=90
         )
 
             #print("\n=== 1D Market Structure ===")
