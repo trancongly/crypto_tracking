@@ -10,14 +10,32 @@ def get_ohlcv_vn(symbol, interval="1d", period="1y"):
         progress=False
     )
 
+    # Không có dữ liệu
     if df.empty:
         return pd.DataFrame(
-            columns=["time", "open", "high", "low", "close", "volume"]
+            columns=[
+                "time",
+                "open",
+                "high",
+                "low",
+                "close",
+                "volume"
+            ]
         )
 
-    df = df[["Open", "High", "Low", "Close", "Volume"]].copy()
+    # Chọn các cột OHLCV
+    df = df[[
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+    ]].copy()
+
+    # Đưa index Timestamp thành column
     df = df.reset_index()
 
+    # Đổi tên cột
     df.columns = [
         "time",
         "open",
@@ -27,18 +45,30 @@ def get_ohlcv_vn(symbol, interval="1d", period="1y"):
         "volume"
     ]
 
-    # Convert Timestamp -> Unix milliseconds
-    #df["time"] = (
-     #   pd.to_datetime(df["time"])
-      #  .astype("int64") // 10**6
-    #)
+    # Đảm bảo các cột OHLCV là numeric
+    numeric_cols = [
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume"
+    ]
+
+    for col in numeric_cols:
+        df[col] = pd.to_numeric(
+            df[col],
+            errors="coerce"
+        )
+
+    # Loại bỏ row có NaN trong OHLCV
+    df = df.dropna(
+        subset=numeric_cols
+    )
+
+    # Loại bỏ row có volumdde = 0
+    df = df[df["volume"] > 0]
+
+    # Reset index
+    df = df.reset_index(drop=True)
 
     return df
-
-# Daily
-#daily = get_ohlcv_vn("FPT.VN", "1d", "1mo")
-#weekly = get_ohlcv_vn("FPT.VN", "1wk", "3y")
-
-#print(daily["low"])
-#print(weekly)
-#print(daily.columns[0])
