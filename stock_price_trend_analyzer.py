@@ -119,12 +119,12 @@ def calculate_market_structure(
 
         "high_price": round(high_price, 8),
         "high_time": high_time,
-        "high_volume": int(high_volume),
+        "volume_at_high_price": int(high_volume),
         "high_rsi": round(high_rsi, 2),
 
         "low_price": round(low_price, 8),
         "low_time": low_time,
-        "low_volume": int(low_volume),
+        "volume_at_low_price": int(low_volume),
         "low_rsi": round(low_rsi, 2),
 
         "current_close": round(current_close, 8),
@@ -134,16 +134,16 @@ def calculate_market_structure(
         "bars_between_high_low":
             int(bars_between_high_low),
 
-        "weeks_since_high":
+        "days_since_high":
             int(days_since_high),
 
-        "weeks_since_low":
+        "days_since_low":
             int(days_since_low),
 
         "range_pct":
             round(float(range_pct), 2),
 
-        "price_position_30week":
+        "price_position_30day":
             round(float(price_position_30d), 4),
 
         "distance_from_high_pct":

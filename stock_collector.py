@@ -15,6 +15,7 @@ from rsi_features import ml_divergence
 from rsi_features import calculate_rsi_features
 
 from stock_price_trend_analyzer import calculate_market_structure
+from volume_features import calculate_volume_transition_features
 
 from bb_analyzer import BollingerStructureAnalyzer
 
@@ -37,18 +38,19 @@ symbol = symbol + ".VN"
 print(symbol)
 
 
-df_1w = get_ohlcv_vn(symbol, "1wk", "3y")
+#df_1w = get_ohlcv_vn(symbol, "1wk", "3y")
 df_1d = get_ohlcv_vn(symbol, "1d", "1y")
 
-rsi_1w = ta.rsi(df_1w["close"], length=6)
+#rsi_1w = ta.rsi(df_1w["close"], length=6)
 rsi_1d = ta.rsi(df_1d["close"], length=6)
-market_features = calculate_market_structure(df=df_1w, rsi=rsi_1w, lookback=50)
+market_features = calculate_market_structure(df=df_1d, rsi=rsi_1d, lookback=255)
+volume_features = calculate_volume_transition_features(df_1d)
 
 #print(market_features)
 with open(filename, "a", encoding="utf-8") as f:
-    f.write("week data")
-    f.write("\n")
     f.write(str(market_features))
+    f.write("\n")
+    f.write(str(volume_features))
     f.write("\n")
 
 
